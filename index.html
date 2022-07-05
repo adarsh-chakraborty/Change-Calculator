@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Change Calculator</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <h2>Change Calculator</h2>
+      <div>
+        <label for="change">
+          Enter amount of change due (0=99):
+          <input type="number" name="" id="change" /> </label
+        ><button id="calculate">Calculate</button>
+      </div>
+      <div class="flex">
+        <label for="quarter">
+          Quarters: <input type="number" name="" id="quarter"
+        /></label>
+        <label for="dime"
+          >Dimes: <input type="number" name="" id="dime"
+        /></label>
+        <label for="nickels"
+          >Nickels: <input type="number" name="" id="nickels"
+        /></label>
+        <label for="pennies"
+          >Pennies: <input type="number" name="" id="pennies"
+        /></label>
+      </div>
+    </div>
+
+    <script>
+      const changeInputBox = document.querySelector('#change');
+      const quarterInputBox = document.querySelector('#quarter');
+      const dimeInputBox = document.querySelector('#dime');
+      const nickelsInputBox = document.querySelector('#nickels');
+      const penniesInputBox = document.querySelector('#pennies');
+
+      const calculateChange = function (returnValue) {
+        const change = {};
+
+        const coinTypes = ['quarter', 'dime', 'nickle', 'penny'];
+
+        const coinValues = [25, 10, 5, 1];
+        let amount;
+
+        for (let i = 0; i < coinValues.length; i++) {
+          amount = Math.floor(returnValue / coinValues[i]);
+          if (amount > 0) {
+            change[coinTypes[i]] = amount;
+            returnValue = returnValue % coinValues[i];
+          }
+        }
+        return change;
+      };
+
+      function processEntry() {
+        const change = parseInt(changeInputBox.value);
+        if (change >= 0 && change < 100) {
+          makeChange(change);
+          return;
+        }
+        alert('Please enter change between 0 and 99.');
+      }
+
+      function makeChange(userChange) {
+        const result = calculateChange(userChange);
+        console.log('Calculated Change: ', result);
+
+        quarterInputBox.value = result?.quarter ?? 0;
+        dimeInputBox.value = result?.dime ?? 0;
+        nickelsInputBox.value = result?.nickle ?? 0;
+        penniesInputBox.value = result?.penny ?? 0;
+      }
+
+      window.addEventListener('DOMContentLoaded', (event) => {
+        console.log('DOM fully loaded and parsed');
+        document
+          .querySelector('#calculate')
+          ?.addEventListener('click', processEntry);
+        changeInputBox.focus();
+        changeInputBox.select();
+      });
+    </script>
+  </body>
+</html>
